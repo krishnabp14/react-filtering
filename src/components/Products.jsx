@@ -20,15 +20,16 @@ const Products = () => {
     }, [dispatch]);
 
     if(loading) {
+        console.log("loading");
         return (
-            <div className="flex mt-4 items-center justify-center w-full">
+            <div className="flex mt-4 mt-24 items-center justify-center w-full">
                 Loading...
             </div>
         )
     }
 
     return (
-        <div className="mt-4">
+        <div className="px-10 mt-24">
             <div className="flex flex-wrap gap-6">
                 {
                     products && products.map(product => {
