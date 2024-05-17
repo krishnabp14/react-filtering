@@ -1,24 +1,25 @@
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Product from "./Product";
+import { fetchProductsStart, fetchProductsSuccess } from "../slices/productSlice";
 
 const Products = () => {
-    
-    const [products, setProducts] = useState([]);
-    const [showLoader, setShowLoader] = useState(false);
+    const dispatch = useDispatch();
+    const products = useSelector((state) => state.products.products);
+    const loading = useSelector((state) => state.products.loading);
 
     const fetchProducts = async () => {
-        setShowLoader(true);
+        dispatch(fetchProductsStart());
         const response = await fetch("https://dummyjson.com/products");
         const products = await response.json();
-        setProducts(products.products);
-        setShowLoader(false);
+        dispatch(fetchProductsSuccess(products.products));
     }
 
     useEffect(() => {
         fetchProducts();
-    }, [])
+    }, [dispatch]);
 
-    if(showLoader) {
+    if(loading) {
         return (
             <div className="flex mt-4 items-center justify-center w-full">
                 Loading...
