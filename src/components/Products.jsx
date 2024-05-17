@@ -12,10 +12,6 @@ const Products = () => {
     const sortedOrder = useSelector((state) => state.sortOrder);
     const [sortedData, setSortedData] = useState([]);
 
-    console.log("sorted" + sortedOrder);
-    console.log("products length" + products.length);
-    console.log("filtered products" + filteredProducts.length);
-
     const fetchProducts = async () => {
         dispatch(fetchProductsStart());
         const response = await fetch("https://dummyjson.com/products");
@@ -39,7 +35,7 @@ const Products = () => {
     }, [dispatch]);
 
     if (loading) {
-        console.log("loading");
+        // console.log("loading");
         return (
             <div className="flex mt-24 items-center justify-center w-full">
                 Loading...
