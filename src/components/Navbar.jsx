@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -14,8 +15,8 @@ const Navbar = () => {
                     Shop Cart
                 </div>
                 <div className="hidden md:flex space-x-4">
-                    <a href="#" className="text-gray-300 hover:text-white">Home</a>
-                    <a href="#" className="text-gray-300 hover:text-white">Cart</a>
+                    <Link to="/" className="text-white">Home</Link>
+                    <Link to="/cart" className="text-white">Cart</Link>
                 </div>
                 <div className="md:hidden">
                     <button onClick={toggleMenu} className="text-gray-300 focus:outline-none">
