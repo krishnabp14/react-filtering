@@ -20,7 +20,7 @@ const Cart = () => {
                                     <h2 className="text-xl font-bold mb-2">{item.title.substring(0, 15)}</h2>
                                     <p className="text-gray-700 text-sm mb-2">{item.brand}</p>
                                 </div>
-                                <div className="flex flex-center items-center items-end">
+                                <div className="flex flex-center items-end">
                                     <p className="text-gray-900 text-lg font-semibold mr-2">${item.price}</p>
                                     <button className=" bg-slate-500 text-white p-2 rounded hover:bg-red-600 focus:outline-none">
                                         <AiFillDelete />

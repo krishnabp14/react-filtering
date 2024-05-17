@@ -33,7 +33,7 @@ const Navbar = () => {
             {isOpen && (
                 <div className="md:hidden">
                     <Link to="/" className="block text-gray-300 hover:text-white p-2">Home</Link>
-                    <Link to="/cart" className="block text-gray-300 hover:text-white p-2 flex items-center">
+                    <Link to="/cart" className=" text-gray-300 hover:text-white p-2 flex items-center">
                         <FaShoppingCart className='mr-2'/> Cart - {cartItems.length}
                     </Link>
                 </div>
