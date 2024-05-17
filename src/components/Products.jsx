@@ -7,6 +7,10 @@ const Products = () => {
     const dispatch = useDispatch();
     const products = useSelector((state) => state.products.products);
     const loading = useSelector((state) => state.products.loading);
+    const filteredProducts = useSelector((state) => state.filteredProducts);
+
+    console.log("products length" + products.length);
+    console.log("filtred products" + filteredProducts.length);
 
     const fetchProducts = async () => {
         dispatch(fetchProductsStart());
@@ -22,7 +26,7 @@ const Products = () => {
     if(loading) {
         console.log("loading");
         return (
-            <div className="flex mt-4 mt-24 items-center justify-center w-full">
+            <div className="flex mt-24 items-center justify-center w-full">
                 Loading...
             </div>
         )
@@ -32,11 +36,9 @@ const Products = () => {
         <div className="px-10 mt-24">
             <div className="flex flex-wrap gap-6">
                 {
-                    products && products.map(product => {
-                        return (
-                            <Product product={product} />
-                        )
-                    })
+                    (filteredProducts.length > 0 ? filteredProducts : products).map(product => (
+                        <Product key={product.id} product={product} />
+                    ))
                 }
             </div>
         </div>

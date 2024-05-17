@@ -6,7 +6,7 @@ const Cart = () => {
     const cart = useSelector((store) => store.cart);
 
     return (
-        <div className="container mx-auto mt-4">
+        <div className="container mx-auto mt-24">
             <h2 className="text-2xl font-bold mb-4">Cart</h2>
             {cart.length === 0 ? (
                 <p>Your cart is empty.</p>

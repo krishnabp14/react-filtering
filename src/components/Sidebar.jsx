@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setProducts } from '../slices/filterProductsSlice';
 
 const Sidebar = () => {
-  const [selectedCategories, setSelectedCategories] = useState([]);
-
-  const [categories, setCategories] = useState([]); // Example categories
+  const dispatch = useDispatch();
+  const [selectedCategories, setSelectedCategories] = useState(() => {
+    const savedCategories = localStorage.getItem('selectedCategories');
+    return savedCategories ? JSON.parse(savedCategories) : [];
+  });
+  const [categories, setCategories] = useState([]);
 
   const handleCategoryChange = (category) => {
     const updatedCategories = selectedCategories.includes(category)
       ? selectedCategories.filter((c) => c !== category)
       : [...selectedCategories, category];
     setSelectedCategories(updatedCategories);
-    // Call a function here to apply filters to the main content
+    localStorage.setItem('selectedCategories', JSON.stringify(updatedCategories));
   };
 
   const fetchCategories = async () => {
@@ -19,10 +24,32 @@ const Sidebar = () => {
     setCategories(categories);
   }
 
+  const fetchCategoryProducts = async (category) => {
+    const response = await fetch(`https://dummyjson.com/products/category/${category}`);
+    const products = await response.json();
+    return products.products;
+  }
+
+  const updateFilteredProducts = async (selectedCategories) => {
+    let newProducts = [];
+    for (const category of selectedCategories) {
+        try {
+            const products = await fetchCategoryProducts(category);
+            newProducts = [...products, ...newProducts];
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    }
+    dispatch(setProducts(newProducts));
+  }
+
+  useEffect(() => {
+    updateFilteredProducts(selectedCategories);
+  }, [selectedCategories]);
+
   useEffect(() => {
     fetchCategories();
-  }, [])
-
+  }, []);
 
   return (
     <div className="sidebar fixed top-16 left-0 h-full bg-slate-100 p-4 w-1/6">

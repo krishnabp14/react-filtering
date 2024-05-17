@@ -1,17 +1,33 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaShoppingCart } from "react-icons/fa";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { addToCart } from '../slices/cartSlice';
+import { addToCart, removeFromCart } from '../slices/cartSlice';
 
 const Product = ({ product }) => {
     const dispatch = useDispatch();
+    const cartItems = useSelector((store) => store.cart);
+    console.log(cartItems);
 
     const handleAddToCart = () => {
-        dispatch(addToCart(product));
-        toast('Item Added to cart successfully');
+        if(!checkCartItem()) {
+            dispatch(addToCart(product));
+            // toast('Item Added to cart successfully');
+        } else {
+            dispatch(removeFromCart({ id: product.id}));
+        }
+    }
+
+    const checkCartItem = () => {
+        for(let i = 0; i < cartItems.length; i++) {
+            if(cartItems[i].id === product.id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     return (
@@ -23,7 +39,7 @@ const Product = ({ product }) => {
                 <p className="text-gray-900 text-lg font-semibold">${product.price}</p>
                 <p className="text-gray-600 text-sm mt-2">{product.description.substring(0, 30)}...</p>
                 <button className="flex items-center justify-center mt-4 w-full bg-slate-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none" onClick={handleAddToCart}>
-                    <FaShoppingCart className="mr-2" /> Add to Cart
+                    <FaShoppingCart className="mr-2" /> {checkCartItem() ? 'Remove' : 'Add'} {checkCartItem() ? 'From' : 'To'} Cart
                 </button>
             </div>
             <ToastContainer />
