@@ -18,6 +18,7 @@ const Sidebar = () => {
   const [sortedOrder, selectSortedOrder] = useState(-1);
 
   const handleCategoryChange = (category) => {
+    updateFilteredProducts(category, selectedCategories.includes(category) ? 'delete' : 'add');
     const updatedCategories = selectedCategories.includes(category)
       ? selectedCategories.filter((c) => c !== category)
       : [...selectedCategories, category];
@@ -39,17 +40,30 @@ const Sidebar = () => {
     return products.products;
   }
 
-  const updateFilteredProducts = async (selectedCategories) => {
-    let newProducts = [];
-    for (const category of selectedCategories) {
+  const updateFilteredProducts = async (category, type) => {
+    let newProducts = [...filteredProducts];
+    if(type === 'add') {
         try {
             const products = await fetchCategoryProducts(category);
             newProducts = [...products, ...newProducts];
         } catch (error) {
             console.error('Error fetching products:', error);
         }
+    } else {
+        newProducts = filteredProducts.filter((product) => product.category !== category);
     }
+
     dispatch(setProducts(newProducts));
+
+    // for (const category of selectedCategories) {
+    //     try {
+    //         const products = await fetchCategoryProducts(category);
+    //         newProducts = [...products, ...newProducts];
+    //     } catch (error) {
+    //         console.error('Error fetching products:', error);
+    //     }
+    // }
+    // dispatch(setProducts(newProducts));
   }
 
   const handleSortedOrderChange = (index) => {
@@ -57,9 +71,9 @@ const Sidebar = () => {
     dispatch(updateSortedOrder(index));
   }
 
-  useEffect(() => {
-    updateFilteredProducts(selectedCategories);
-  }, [selectedCategories]);
+//   useEffect(() => {
+//     updateFilteredProducts(selectedCategories);
+//   }, [selectedCategories]);
 
   useEffect(() => {
     fetchCategories();
