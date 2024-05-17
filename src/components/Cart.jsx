@@ -1,9 +1,14 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AiFillDelete } from "react-icons/ai";
+import { removeFromCart } from "../slices/cartSlice";
 
 
 const Cart = () => {
+    const dispatch = useDispatch();
     const cart = useSelector((store) => store.cart);
+    const handleCartDelete = (id) => {
+        dispatch(removeFromCart({ id: id}));
+    }
 
     return (
         <div className="container mx-auto mt-24">
@@ -22,7 +27,7 @@ const Cart = () => {
                                 </div>
                                 <div className="flex flex-center items-end">
                                     <p className="text-gray-900 text-lg font-semibold mr-2">${item.price}</p>
-                                    <button className=" bg-slate-500 text-white p-2 rounded hover:bg-red-600 focus:outline-none">
+                                    <button className=" bg-slate-500 text-white p-2 rounded hover:bg-red-600 focus:outline-none" onClick={() => handleCartDelete(item.id)}>
                                         <AiFillDelete />
                                     </button>
                                 </div>
